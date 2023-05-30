@@ -1,20 +1,19 @@
 import React, { SyntheticEvent, useState } from 'react';
-import { Activity } from '../../../app/Models/activity';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
+import { useStore } from '../../../app/stores/store';
+import { observer } from 'mobx-react-lite';
 
-interface ActivityListProps {
-    activities: Activity[];
-    selectActivity: (id: string) => void;
-    deleteActivity: (id: string) => void;
-    submitting: boolean;
-}
 
-const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }: ActivityListProps) => {
-    const [target, setTarget] = useState('');
+const ActivityList = () => {
+    const [target, setTarget] = useState('');    
+    const {activityStore} = useStore();
+    const {deleteActivity, activitiesByDate: activities, loading} = activityStore;
+
     const handleActivityDelete = (e: SyntheticEvent<HTMLButtonElement>, id:string) => {
         setTarget(e.currentTarget.name);
         deleteActivity(id);
     }
+
     return (
         <Segment>
             <Item.Group>
@@ -29,10 +28,10 @@ const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }
                                     <div>{activity.city}, {activity.venue}</div>
                                 </Item.Description>
                                 <Item.Extra>
-                                    <Button floated='right' content='View' color='blue' onClick={() => selectActivity(activity.id)}/>
+                                    <Button floated='right' content='View' color='blue' onClick={() => activityStore.selectActivity(activity.id)}/>
                                     <Button 
                                         name={activity.id}
-                                        loading={submitting && activity.id === target}
+                                        loading={loading && activity.id === target}
                                         floated='right' 
                                         content='Delete' 
                                         color='red' 
@@ -48,4 +47,4 @@ const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }
     )
 }
 
-export default ActivityList;
+export default observer(ActivityList);
