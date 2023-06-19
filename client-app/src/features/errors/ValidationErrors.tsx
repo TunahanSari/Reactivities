@@ -1,4 +1,4 @@
-import { Message, MessageList } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 
 interface Props {
     errors: any;

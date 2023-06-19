@@ -1,4 +1,3 @@
-import { object } from "yup";
 import { Profile } from "./profile";
 
 export interface Activity {

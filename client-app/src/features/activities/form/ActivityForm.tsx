@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Header, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
-import { Activity, ActivityFormValues } from '../../../app/models/activity';
+import { ActivityFormValues } from '../../../app/models/activity';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { v4 as uuid } from 'uuid';
@@ -17,7 +17,7 @@ import MyDateInput from '../../../app/common/form/MyDateInput';
 const ActivityForm = () => {
     const { activityStore } = useStore();
     const { createActivity, updateActivity,
-        loading, loadActivity, loadingInitial } = activityStore;
+        loadActivity, loadingInitial } = activityStore;
 
     const { id } = useParams();
     const navigate = useNavigate();

@@ -12,7 +12,7 @@ import ModalContainer from '../common/modals/ModalContainer';
 
 function App() {
   const location = useLocation();
-  const { commonStore, userStore, modalStore } = useStore();
+  const { commonStore, userStore } = useStore();
   useEffect(() => {
     if (commonStore.token) {
       userStore.getUser().finally(() => commonStore.setAppLoaded());
