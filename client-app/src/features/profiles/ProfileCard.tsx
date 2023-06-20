@@ -13,7 +13,7 @@ const ProfileCard = ({profile}: Props) => {
             <Image src={profile.image || "/assets/user.png"}/>
             <Card.Content>
                 <Card.Header>{profile.displayName}</Card.Header>
-                <Card.Description>Bio Goes Here</Card.Description>
+                <Card.Description style={{width: "100%", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis"}}>{profile.bio}</Card.Description>
             </Card.Content>
             <Card.Content extra>
                 <Icon name="user"/>

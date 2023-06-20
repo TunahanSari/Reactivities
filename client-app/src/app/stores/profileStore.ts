@@ -34,6 +34,25 @@ class ProfileStore {
         }
     }
 
+    updateProfile = async (profile: Partial<Profile>) => {
+        this.loading = true;
+        try {
+            await agent.Profiles.updateProfile(profile);
+            runInAction(() => {
+                if (profile && profile.displayName &&
+                    profile.displayName !== store.userStore.user?.displayName) {
+                    store.userStore.setDisplayName(profile.displayName);
+                }
+                this.profile = {...this.profile, ...profile as Profile};
+                this.loading = false;
+            });
+        } catch (error) {
+            console.log(error);
+            runInAction(() => this.loading = false);
+        }
+
+    }
+
     uploadPhoto = async (file: Blob) => {
         this.uploading = true;
 
@@ -63,9 +82,9 @@ class ProfileStore {
             await agent.Profiles.setMainPhoto(photo.id);
             store.userStore.setImage(photo.url);
             runInAction(() => {
-                if(this.profile && this.profile.photos) {
+                if (this.profile && this.profile.photos) {
                     this.profile.photos.find(p => p.isMain)!.isMain = false;
-                    this.profile.photos.find(p=> p.id === photo.id)!.isMain = true;
+                    this.profile.photos.find(p => p.id === photo.id)!.isMain = true;
                     this.profile.image = photo.url;
                 }
                 this.loading = false
@@ -75,15 +94,15 @@ class ProfileStore {
             runInAction(() => this.loading = false);
         }
     }
-    
+
     deletePhoto = async (photo: Photo) => {
         this.loading = true;
         try {
             await agent.Profiles.deletePhoto(photo.id);
             runInAction(() => {
-                if(this.profile && this.profile.photos) {
-                    this.profile.photos = 
-                    this.profile.photos.filter(p=> p.id !== photo.id);
+                if (this.profile && this.profile.photos) {
+                    this.profile.photos =
+                        this.profile.photos.filter(p => p.id !== photo.id);
                 }
                 this.loading = false
             });
