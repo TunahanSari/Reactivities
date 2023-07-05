@@ -11,22 +11,22 @@ import ActivityDetailedSidebar from "./ActivityDetailedSidebar";
 
 const ActivityDetails = () => {
     const {activityStore} = useStore();
-    const {selectedActivity, loadActivity, loadingInitial} = activityStore;
+    const {selectedActivity, loadActivity, loadingInitial,clearSelectedActivity} = activityStore;
     const {id} = useParams();
 
     useEffect(() => {
         if(id) {
             loadActivity(id);
         }
-    }, [id, loadActivity]);
+        return () => clearSelectedActivity();
+    }, [id, loadActivity, clearSelectedActivity]);
 
     if(loadingInitial || !selectedActivity) return <LoadingComponent/>; //This should not happen since we're not displaying this comp. without a selected activity
-    
     return <Grid>
         <Grid.Column width={10}>
             <ActivityDetailedHeader activity={selectedActivity}/>
             <ActivityDetailedInfo activity={selectedActivity}/>
-            <ActivityDetailedChat/>
+            <ActivityDetailedChat activityId={selectedActivity.id}/>
         </Grid.Column>
         <Grid.Column width={6}>
             <ActivityDetailedSidebar activity={selectedActivity}/>

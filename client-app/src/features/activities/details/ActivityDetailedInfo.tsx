@@ -29,7 +29,7 @@ export default observer(function ActivityDetailedInfo({activity}: Props) {
                     </Grid.Column>
                     <Grid.Column width={15}>
             <span>
-              {format(activity.date!, 'd MMM yyyy H:mm')}
+              {format({...activity}.date!, 'd MMM yyyy H:mm')}
             </span>
                     </Grid.Column>
                 </Grid>

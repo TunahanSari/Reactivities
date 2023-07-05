@@ -23,7 +23,7 @@ export default class ActivityStore {
     get groupedActivities() {
         return Object.entries(
             this.activitiesByDate.reduce((activities, activity) => {
-                const date = format(activity.date!, 'd MMM yyyy');
+                const date = format({...activity}.date!, 'd MMM yyyy');
                 activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 return activities;
             }, {} as { [key: string]: Activity[] })
@@ -54,9 +54,11 @@ export default class ActivityStore {
         } else {
             try {
                 activity = await agent.Activities.details(id);
+                activity.date = new Date(activity.date!);
                 this.setLoadingInitial(false);
                 this.setSelectedActivity(activity);
                 this.setActivity(activity);
+
                 return activity;
             } catch (error) {
                 console.log(error);
@@ -81,7 +83,8 @@ export default class ActivityStore {
 
 
     setSelectedActivity = (activity: Activity) => {
-        this.selectedActivity = activity;
+        // console.log("load activity", {...activity}.date);
+        this.selectedActivity = {...activity};
     }
 
     setLoadingInitial = (state: boolean) => {
@@ -176,4 +179,6 @@ export default class ActivityStore {
             runInAction(() => this.loading = false);
         }
     }
+
+    clearSelectedActivity = () => this.selectedActivity = undefined;
 }

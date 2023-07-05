@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Microsoft.AspNetCore.Authorization;
+using API.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
 
 #region Db initialization
 using IServiceScope scope = app.Services.CreateScope();
