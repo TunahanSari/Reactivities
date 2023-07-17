@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Application.Activities;
 using Microsoft.AspNetCore.Authorization;
+using Application.Core;
 
 namespace API.Controllers
 {
@@ -18,9 +19,9 @@ namespace API.Controllers
         }
 
         [HttpGet]           // /api/GetActivities
-        public async Task<IActionResult> GetActivities()
+        public async Task<IActionResult> GetActivities([FromQuery]ActivityParams param)
         {
-            return HandleResult(await _mediator.Send(new List.Query()));
+            return HandlePagedResult(await _mediator.Send(new List.Query{Params = param}));
         }
 
         [HttpGet("{id}")]   // /api/GetActivity/{id}
